@@ -140,7 +140,6 @@ class AdminSignatureController extends \crocodicstudio\crudbooster\controllers\C
         $this->load_js[] = asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js");
         $this->load_js[] = "//code.jquery.com/ui/1.12.1/jquery-ui.min.js";
         $this->load_js[] = "//keith-wood.name/js/jquery.signature.js";
-
     }
 
     public function index()

@@ -18,6 +18,9 @@ Route::get('/admin/signature', 'AdminSignatureController@index');
 Route::post('/admin/signature/store', 'AdminSignatureController@store')->name('signature.store');
 
 // ------------
-Route::get('/{any}', function () {
-    return view('welcome');
-})->where('any', '.*');
+// Route::get('/{any}', function () {
+//     // return view('welcome');
+// })->where('any', '.*');
+Route::get('/', function () {
+    return redirect('/admin/login');
+});
