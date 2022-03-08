@@ -16,7 +16,8 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "setasign/fpdf": "1.8.*",
-        "setasign/fpdi": "^2.0"
+        "setasign/fpdi": "^2.0",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
