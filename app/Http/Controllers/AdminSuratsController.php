@@ -4,6 +4,8 @@
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use Datatables;
+	use Carbon\Carbon;
 
 	class AdminSuratsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -499,7 +501,7 @@
 				'categories.id'
 				)
 			->select(
-				'categories.judul',
+				'categories.judul as kategori',
 				'surats.*'
 				)
 			->get();
