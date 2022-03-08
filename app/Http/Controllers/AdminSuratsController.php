@@ -145,7 +145,163 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+	        // $this->script_js = NULL;
+			if(CRUDBooster::getCurrentMethod() == "getIndex"){
+				$this->script_js .= "
+				var tb = $('#example').DataTable({
+					\"processing\": true,
+					\"serverSide\": true,
+					\"ajax\": '".CRUDBooster::mainpath('json-index')."',
+					\"columns\": [
+						{ data: \"aksi\", name:\"aksi\", orderable:false},
+						{ data: \"judul\", name:\"judul\"},
+						{ data: \"kategori\", name:\"kat_id\"},
+					],
+					\"language\": {
+						\"lengthMenu\": \"Tampilkan _MENU_ Data per Halaman\",
+						\"zeroRecords\": \"Tidak ada Data\",
+						\"info\": \"Menampilkan _START_ sampai _END_ dari _TOTAL_ total data\",
+						\"infoEmpty\": \"Tabel kosong\",
+						\"infoFiltered\": \"(Difilter dari _MAX_ total data)\",
+						\"search\": \"Cari\",
+						\"paginate\": {
+							\"first\":      \"Pertama\",
+							\"last\":       \"Terakhir\",
+							\"next\":       \">\",
+							\"previous\":   \"<\"
+						},
+					},
+					columnDefs: [{
+						\"orderable\": false,
+					}],
+					\"dom\": \"ltrip\",
+					order: [[ 1, \"desc\" ]]
+				});
+				// pencarian
+				// $('#pedagang_filter').on('change', function(){
+				// 	var searchText1;
+				// 	if($(this).val()=='') {
+				// 		searchText1 = '';
+				// 	} else {
+				// 		searchText1 = '^' + $(this).val() + '$';
+				// 	}
+				// 	tb.column(1).search(searchText1, true, false, true).draw();   
+				// });
+				
+				//tombol
+				function set_button(id) {
+					var content = \"<a href='".CRUDBooster::mainpath('edit')."/\"+ id +\"' class='btn btn-lg btn-success'><i class='fa fa-pencil'></i> Edit</a>\";
+					content += \"<a data-dismiss='modal' class='btn btn-lg btn-default'><i class='fa fa-times'></i>  Tutup</a>\";
+
+					return content;
+				}
+				//fungsi koma
+				function numberWithCommas(x) {
+					if(x==null) {
+						return 0;
+					} else {
+						return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, \",\");
+					}
+				}
+
+				//fungsi untuk filtering data berdasarkan tanggal 
+				var start_date;
+				var end_date;
+				var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
+					var dateStart = parseDateValue(start_date);
+					var dateEnd = parseDateValue(end_date);
+					//Kolom tanggal yang akan kita gunakan berada dalam urutan 2, karena dihitung mulai dari 0
+					var evalDate= parseDateValue(aData[0]);
+						if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+								( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+								( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+								( dateStart <= evalDate && evalDate <= dateEnd ) )
+						{
+							return true;
+						}
+						return false;
+				});
+
+				// fungsi untuk converting format tanggal dd/mm/yyyy menjadi format tanggal javascript menggunakan zona aktubrowser
+				function parseDateValue(rawDate) {
+					var dateArray= rawDate.split(\"/\");
+					var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
+					return parsedDate;
+				}    
+
+				//konfigurasi daterangepicker pada input dengan id datesearch
+				// lokal
+				var id_daterangepicker = {
+					'direction': 'ltr',
+					'format': 'DD/MM/YYYY',
+					'separator': ' - ',
+					'applyLabel': 'Terapkan',
+					'cancelLabel': 'Batal',
+					'fromLabel': 'Dari',
+					'toLabel': 'Sampai',
+					'customRangeLabel': 'Atur',
+					'daysOfWeek': [
+						'Min',
+						'Sen',
+						'Sel',
+						'Rab',
+						'Kam',
+						'Jum',
+						'Sab'
+					],
+					'monthNames': [
+						'Januari',
+						'Februari',
+						'Maret',
+						'April',
+						'Mei',
+						'Juni',
+						'Juli',
+						'Agustus',
+						'September',
+						'Oktober',
+						'November',
+						'Desember'
+					],
+					'firstDay': 1
+				};
+				
+				var tgl_awal;
+            	var tgl_akhir;
+				$(function() {
+					$('#datesearch').daterangepicker({
+						locale: id_daterangepicker,
+						opens: 'left'
+					}, function(start, end, label) {
+						tgl_awal = start.format('YYYY-MM-DD');
+						tgl_akhir = end.format('YYYY-MM-DD');
+					});
+				});
+
+				//menangani proses saat apply date range
+				$('#datesearch').on('apply.daterangepicker', function(ev, picker) {
+					$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+					start_date=picker.startDate.format('DD/MM/YYYY');
+					end_date=picker.endDate.format('DD/MM/YYYY');
+					$.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
+					tb.draw();
+				});
+
+				$('#datesearch').on('cancel.daterangepicker', function(ev, picker) {
+					$(this).val('');
+					start_date='';
+					end_date='';
+					$.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
+					tb.draw();
+				});
+				";
+			}
+
+			$this->script_js .= "
+
+				// input
+				$('.select2').select2();
+			";
 
 
             /*
@@ -181,6 +337,7 @@
 	        |
 	        */
 	        $this->load_js = array();
+			$this->load_js[] = asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js");
 	        
 	        
 	        
@@ -205,6 +362,7 @@
 	        |
 	        */
 	        $this->load_css = array();
+			$this->load_css[] = asset('vendor/crudbooster/assets/select2/dist/css/select2.min.css');
 	        
 	        
 	    }
@@ -319,9 +477,40 @@
 
 	    }
 
+		// index
+		public function getIndex(){
+			$data['page_title'] = "Data Surat";
 
+			// $data['offline'] = DB::table('tb_monitoring_domain')
+			// 	->where('tgl_input', '=', Carbon::now()->format('Y-m-d'))
+			// 	->where('status', '=', 0)
+			// 	->count();
+			
+			return $this->view('admin/surat/index', $data);
+		}
 
-	    //By the way, you can still create your own method in here... :) 
+		// json index
+		public function getJsonIndex() {
+			$sql = DB::table("surats")
+			->rightJoin(
+				'categories', 
+				'surats.kat_id', 
+				'=', 
+				'categories.id'
+				)
+			->select(
+				'categories.judul',
+				'surats.*'
+				)
+			->get();
+				
+			// datatable
+			return Datatables::of($sql)
+			->addColumn('aksi', function($sql){
+				return view('admin/datatables/default', compact('sql'));
+			})
+			->make(true);
+		}
 
 
 	}
