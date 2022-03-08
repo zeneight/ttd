@@ -4,6 +4,7 @@
 	@endif
 	@if(CRUDBooster::isUpdate() && $sql->id != NULL)
 		<a class="btn btn-xs btn-default btn-edit" title="Opsi" href='{{CRUDBooster::mainpath("edit/$sql->id")}}'><i class="fa fa-pencil"> </i></a>
+		<a class="btn btn-xs btn-primary btn-download" title="Download" href='{{CRUDBooster::mainpath("download/$sql->id")}}'><i class="fa fa-download"> </i></a>
 	@endif
 	@if(CRUDBooster::isDelete())
 	<!-- <a class="btn btn-xs btn-danger btn-delete" title="Hapus" href="javascript:;" onclick="swal({   
