@@ -30,8 +30,8 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Kategori","name"=>"kat_id","join"=>"categories,judul"];
 			$this->col[] = ["label"=>"Judul","name"=>"judul"];
+			$this->col[] = ["label"=>"Kategori","name"=>"kat_id","join"=>"categories,judul"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -45,7 +45,7 @@
 			//$this->form = [];
 			//$this->form[] = ['label'=>'Kategori','name'=>'kat_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-10','datatable'=>'categories,judul'];
 			//$this->form[] = ['label'=>'Judul','name'=>'judul','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'Anda hanya dapat memasukkan huruf saja'];
-			//$this->form[] = ['label'=>'File Surat','name'=>'file_surat','type'=>'upload','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'File Surat','name'=>'file_surat','type'=>'upload','validation'=>'required','width'=>'col-sm-10'];
 			# OLD END FORM
 
 			/* 
