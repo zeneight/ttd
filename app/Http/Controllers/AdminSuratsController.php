@@ -161,6 +161,7 @@
 						{ data: \"aksi\", name:\"aksi\", orderable:false},
 						{ data: \"judul\", name:\"judul\"},
 						{ data: \"kategori\", name:\"kat_id\"},
+						{ data: \"id\", name:\"id\"},
 					],
 					\"language\": {
 						\"lengthMenu\": \"Tampilkan _MENU_ Data per Halaman\",
@@ -178,9 +179,11 @@
 					},
 					columnDefs: [{
 						\"orderable\": false,
-					}],
+						},
+						{ 'visible': false, 'targets': 3 }
+					],
 					// \"dom\": \"ltrip\",
-					order: [[ 1, \"desc\" ]]
+					order: [[ 3, \"desc\" ]]
 				});
 				// pencarian
 				// $('#pedagang_filter').on('change', function(){
