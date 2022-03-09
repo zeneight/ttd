@@ -7,6 +7,9 @@
 	use Datatables;
 	use Carbon\Carbon;
 
+	use Illuminate\Support\Facades\File;
+	use Illuminate\Support\Facades\Response;
+
 	class AdminSuratsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
@@ -426,11 +429,24 @@
 	    */
 	    public function hook_after_add($id) {     
 			
+			// query
 			$data = DB::table('surats')
-				->where('id', '=', $id)
+				->rightJoin(
+					'categories', 
+					'surats.kat_id', 
+					'=', 
+					'categories.id'
+				)
+				->select(
+					'categories.judul as kategori',
+					'categories.halaman',
+					'categories.kordinat_x',
+					'categories.kordinat_y',
+					'surats.*'
+				)
+				->where('surats.id', '=', $id)
 				->first();
 			
-	        //Your code here
 			$pdf = new \setasign\Fpdi\Fpdi();
 			$pdf->AddPage();
 
@@ -439,25 +455,24 @@
 			$pagecount = $pdf->setSourceFile($filenya);
 
 			//Import the first page of the file
-			$tppl = $pdf->importPage(1);
+			$tppl = $pdf->importPage($data->halaman);
 
 			//Use this page as template
-			// use the imported page and place it at point 20,30 with a width of 170 mm
-			$pdf->useTemplate($tppl, -10, 20, 210);
+			$pdf->useTemplate($tppl, null, null, null, null, true);
 
 			#Print Hello World at the bottom of the page
 
-			//Select Arial italic 8
-			$pdf->SetFont("Arial",'',8);
-			$pdf->SetTextColor(0,0,0);
-			$pdf->SetXY(90, 160);
+			//config text
+			// $pdf->SetFont("Arial",'',15);
+			// $pdf->SetTextColor(0,0,0);
+			// $pdf->SetXY(140, 200);
+			// $pdf->Write(0, "TESTSEESTE");
 
-			// $pdf->Image(‘om12iii.jpg’,45,220,15,10);
+			// add image
+			$pdf->Image(storage_path("app/".CRUDBooster::getSetting('ttd')),$data->kordinat_x,$data->kordinat_y,75,25);
 
-			$pdf->Write(0, "TESTSEESTE");
-
-			$pdf->Output($data->judul."-ttd.pdf", "F");
-
+			// output
+			$pdf->Output("surat/".str_slug($data->judul)."-ttd.pdf", "F");
 	    }
 
 	    /* 
@@ -493,7 +508,16 @@
 	    | 
 	    */
 	    public function hook_before_delete($id) {
-	        //Your code here
+			// query
+			$data = DB::table('surats')
+				->where('id', '=', $id)
+				->first();
+
+			if(File::exists(public_path("surat/".str_slug($data->judul)."-ttd.pdf"))){
+				File::delete(public_path("surat/".str_slug($data->judul)."-ttd.pdf"));
+			}else{
+				dd("File does not exists -> "."surat/".str_slug($data->judul)."-ttd.pdf");
+			}
 
 	    }
 
@@ -505,7 +529,7 @@
 	    | 
 	    */
 	    public function hook_after_delete($id) {
-	        //Your code here
+			//Your code here
 
 	    }
 
@@ -551,10 +575,13 @@
 			->make(true);
 		}
 
-		// download
+		// get file pdf
 		public function getDownload($data) {
-			// return 'test'.$data;
-			// echo CRUDBooster::mainpath();
+			$file = public_path().DIRECTORY_SEPARATOR.'surat'.DIRECTORY_SEPARATOR.$data.'-ttd.pdf';
+			$file = File::get($file);
+			$response = Response::make($file,200);
+			$response->header('Content-Type', 'application/pdf');
+			return $response;
 			
 		}
 

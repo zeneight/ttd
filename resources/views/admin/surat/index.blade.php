@@ -8,26 +8,7 @@
             <div class="pull-left"><br></div>
             <div class="pull-right"></div>
         </div>
-        <div class="col-md-6 callout callout-info">
-            <div class="col-md-6 no-padding">
-                Jumlah Surat:
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="callout callout-success">
-                <p>
-                    Web Online: <br><b>test</b>
-                </p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="callout callout-danger">
-                <p>
-                    Web Down: <br>
-                </p>
-            </div>
-        </div>
-        <hr>
+        
         <div class="col-md-12">
             <table id="example" class='table table-striped table-bordered'>
                 <thead>
