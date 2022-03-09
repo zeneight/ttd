@@ -513,8 +513,11 @@
 				->where('id', '=', $id)
 				->first();
 
+			// hapus file
 			if(File::exists(public_path("surat/".str_slug($data->judul)."-ttd.pdf"))){
 				File::delete(public_path("surat/".str_slug($data->judul)."-ttd.pdf"));
+				// hapus di storage
+				File::delete(storage_path("app/".$data->file_surat));
 			}else{
 				dd("File does not exists -> "."surat/".str_slug($data->judul)."-ttd.pdf");
 			}
