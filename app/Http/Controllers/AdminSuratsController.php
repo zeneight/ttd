@@ -179,7 +179,7 @@
 					columnDefs: [{
 						\"orderable\": false,
 					}],
-					\"dom\": \"ltrip\",
+					// \"dom\": \"ltrip\",
 					order: [[ 1, \"desc\" ]]
 				});
 				// pencarian
@@ -555,7 +555,7 @@
 		// json index
 		public function getJsonIndex() {
 			$sql = DB::table("surats")
-			->rightJoin(
+			->leftJoin(
 				'categories', 
 				'surats.kat_id', 
 				'=', 
