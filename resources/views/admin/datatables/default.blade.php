@@ -7,7 +7,7 @@
 		<a class="btn btn-xs btn-primary btn-download" title="Download" href='{{CRUDBooster::mainpath("download/$sql->id")}}'><i class="fa fa-download"> </i></a>
 	@endif
 	@if(CRUDBooster::isDelete())
-	<!-- <a class="btn btn-xs btn-danger btn-delete" title="Hapus" href="javascript:;" onclick="swal({   
+	<a class="btn btn-xs btn-danger btn-delete" title="Hapus" href="javascript:;" onclick="swal({   
 				title: &quot;Apakah anda yakin ?&quot;,   
 				text: &quot;Anda tidak akan dapat mengembalikan data anda!&quot;,   
 				type: &quot;warning&quot;,   
@@ -16,7 +16,7 @@
 				confirmButtonText: &quot;Ya&quot;,  
 				cancelButtonText: &quot;Tidak&quot;,  
 				closeOnConfirm: false }, 
-				function(){  location.href=&quot;{{CRUDBooster::mainpath('delete/'.$sql->id)}}&quot; });"><i class="fa fa-trash"></i></a> -->
+				function(){  location.href=&quot;{{CRUDBooster::mainpath('delete/'.$sql->id)}}&quot; });"><i class="fa fa-trash"></i></a>
 	@endif
 
 </div>

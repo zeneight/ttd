@@ -415,7 +415,6 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -425,36 +424,39 @@
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {        
+	    public function hook_after_add($id) {     
+			
+			$data = DB::table('surats')
+				->where('id', '=', $id)
+				->first();
+			
 	        //Your code here
-			// $pdf = new FPDI();
-			// $pdf->AddPage();
+			$pdf = new \setasign\Fpdi\Fpdi();
+			$pdf->AddPage();
 
-			// //Set the source PDF file
-			// $pagecount = $pdf->setSourceFile(“Tally_PO.pdf”);
+			//Set the source PDF file
+			$filenya = storage_path("app/".$data->file_surat);
+			$pagecount = $pdf->setSourceFile($filenya);
 
-			// //Import the first page of the file
-			// $tppl = $pdf->importPage(1);
+			//Import the first page of the file
+			$tppl = $pdf->importPage(1);
 
-			// //Use this page as template
-			// // use the imported page and place it at point 20,30 with a width of 170 mm
-			// $pdf->useTemplate($tppl, -10, 20, 210);
+			//Use this page as template
+			// use the imported page and place it at point 20,30 with a width of 170 mm
+			$pdf->useTemplate($tppl, -10, 20, 210);
 
-			// #Print Hello World at the bottom of the page
+			#Print Hello World at the bottom of the page
 
-			// //Select Arial italic 8
-			// $pdf->SetFont(‘Arial’,”,8);
-			// $pdf->SetTextColor(0,0,0);
-			// $pdf->SetXY(90, 160);
+			//Select Arial italic 8
+			$pdf->SetFont("Arial",'',8);
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetXY(90, 160);
 
 			// $pdf->Image(‘om12iii.jpg’,45,220,15,10);
-			// $pdf->Image(‘Om.jpg’,65,220,15,10);
-			// $pdf->Image(‘think.jpg’,80,220,15,10);
-			// $pdf->Image(‘Om.jpg’,140,240,15,10);
 
-			// //$pdf->Write(0, “Hello World”);
+			$pdf->Write(0, "TESTSEESTE");
 
-			// $pdf->Output(“modified_pdf.pdf”, “F”);
+			$pdf->Output($data->judul."-ttd.pdf", "F");
 
 	    }
 
@@ -520,11 +522,11 @@
 		}
 
 		// add
-		public function getAdd(){
-			$data['page_title'] = "Tambah Surat";
+		// public function getAdd(){
+		// 	$data['page_title'] = "Tambah Surat";
 
-			return $this->view('admin/surat/add', $data);
-		}
+		// 	return $this->view('admin/surat/add', $data);
+		// }
 
 		// json index
 		public function getJsonIndex() {
@@ -551,7 +553,9 @@
 
 		// download
 		public function getDownload($data) {
-			return 'test'.$data;
+			// return 'test'.$data;
+			// echo CRUDBooster::mainpath();
+			
 		}
 
 
