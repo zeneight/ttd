@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// admin
+Route::get('/admin','AdminDashboardController@getIndex');
 
 Route::get('/admin/signature', 'AdminSignatureController@index');
 Route::post('/admin/signature/store', 'AdminSignatureController@store')->name('signature.store');
