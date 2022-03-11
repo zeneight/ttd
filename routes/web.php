@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// admin
+// dashboard
 Route::get('/admin','AdminDashboardController@getIndex');
 
 Route::get('/admin/signature', 'AdminSignatureController@index');
