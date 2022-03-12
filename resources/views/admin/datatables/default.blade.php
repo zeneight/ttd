@@ -3,7 +3,35 @@
 	<!-- <a class="btn btn-xs btn-primary btn-detail" title="Detil Data" onclick="test({{$sql->id}}, 'surveis')"><i class="fa fa-eye"></i>&nbsp; Info</a> -->
 	@endif
 	@if(CRUDBooster::isUpdate() && $sql->id != NULL)
-		<a class="btn btn-xs btn-primary btn-edit" title="Tandatangani" href='{{CRUDBooster::mainpath("ttd/$sql->id")}}'><i class="fa fa-book"> </i> TTD</a>
+		@if($sql->status==0)
+		<a class="btn btn-xs btn-primary btn-ttd" title="TTD" href="javascript:;" onclick="swal({   
+				title: &quot;Tanda-tanganni Surat&quot;,   
+				text: &quot;Inputkan passcode Anda!&quot;,   
+				type: &quot;input&quot;,   
+				showCancelButton: true,     
+				confirmButtonText: &quot;Submit&quot;,  
+				cancelButtonText: &quot;Kembali&quot;,
+				inputPlaceholder: &quot;Input di sini&quot;,  
+				closeOnConfirm: false }, 
+				function(inputValue){
+					if (inputValue === null) return false;
+					
+					if (inputValue === '') {
+						swal.showInputError('Mohon isikan field!');
+						return false
+					}else{
+						
+						$.ajax({
+							type:'POST',
+							url:&quot;{{CRUDBooster::mainpath('ttd')}}&quot;,
+								data:{id:{{$sql->id}}, password:inputValue},
+								success:function(data){
+									alert(data.success);
+								}
+						});
+					}
+				});"><i class="fa fa-book"></i> TTD</a>
+		@endif
 		<a target="_BLANK" class="btn btn-xs btn-warning btn-download" title="Lihat" href='{{CRUDBooster::mainpath("download/".str_slug($sql->judul))}}'><i class="fa fa-eye"> </i></a>
 	@endif
 	@if(CRUDBooster::isDelete())

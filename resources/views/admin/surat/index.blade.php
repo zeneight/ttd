@@ -7,7 +7,7 @@
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Surat sudah ditandatangani</a></li>
-            <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Surat belum ditandatangani</a></li>
+            <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false">Surat belum ditandatangani &nbsp;<span class="label label-danger pull-right">2</span></a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_1">
