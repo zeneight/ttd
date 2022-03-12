@@ -400,50 +400,7 @@
 	    */
 	    public function hook_after_add($id) {     
 			
-			// query
-			$data = DB::table('surats')
-				->rightJoin(
-					'categories', 
-					'surats.kat_id', 
-					'=', 
-					'categories.id'
-				)
-				->select(
-					'categories.judul as kategori',
-					'categories.halaman',
-					'categories.kordinat_x',
-					'categories.kordinat_y',
-					'surats.*'
-				)
-				->where('surats.id', '=', $id)
-				->first();
 			
-			$pdf = new \setasign\Fpdi\Fpdi();
-			$pdf->AddPage();
-
-			//Set the source PDF file
-			$filenya = storage_path("app/".$data->file_surat);
-			$pagecount = $pdf->setSourceFile($filenya);
-
-			//Import the first page of the file
-			$tppl = $pdf->importPage($data->halaman);
-
-			//Use this page as template
-			$pdf->useTemplate($tppl, null, null, null, null, true);
-
-			#Print Hello World at the bottom of the page
-
-			//config text
-			// $pdf->SetFont("Arial",'',15);
-			// $pdf->SetTextColor(0,0,0);
-			// $pdf->SetXY(140, 200);
-			// $pdf->Write(0, "TESTSEESTE");
-
-			// add image
-			$pdf->Image(storage_path("app/".CRUDBooster::getSetting('ttd')),$data->kordinat_x,$data->kordinat_y,75,25);
-
-			// output
-			$pdf->Output("surat/".str_slug($data->judul)."-ttd.pdf", "F");
 	    }
 
 	    /* 
@@ -539,6 +496,7 @@
 				'categories.judul as kategori',
 				'surats.*'
 				)
+			->where('surats.status', '=', 1)
 			->get();
 				
 			// datatable
@@ -562,6 +520,7 @@
 				'categories.judul as kategori',
 				'surats.*'
 				)
+			->where('surats.status', '=', 0)
 			->get();
 				
 			// datatable
@@ -582,5 +541,51 @@
 			
 		}
 
+		// fungsi tanda tangan TTD
+		public function tandaTangan($data) {
+			// query
+			$data = DB::table('surats')
+				->rightJoin(
+					'categories', 
+					'surats.kat_id', 
+					'=', 
+					'categories.id'
+				)
+				->select(
+					'categories.judul as kategori',
+					'categories.halaman',
+					'categories.kordinat_x',
+					'categories.kordinat_y',
+					'surats.*'
+				)
+				->where('surats.id', '=', $id)
+				->first();
+			
+			$pdf = new \setasign\Fpdi\Fpdi();
+			$pdf->AddPage();
 
+			//Set the source PDF file
+			$filenya = storage_path("app/".$data->file_surat);
+			$pagecount = $pdf->setSourceFile($filenya);
+
+			//Import the first page of the file
+			$tppl = $pdf->importPage($data->halaman);
+
+			//Use this page as template
+			$pdf->useTemplate($tppl, null, null, null, null, true);
+
+			#Print Hello World at the bottom of the page
+
+			//config text
+			// $pdf->SetFont("Arial",'',15);
+			// $pdf->SetTextColor(0,0,0);
+			// $pdf->SetXY(140, 200);
+			// $pdf->Write(0, "TESTSEESTE");
+
+			// add image
+			$pdf->Image(storage_path("app/".CRUDBooster::getSetting('ttd')),$data->kordinat_x,$data->kordinat_y,75,25);
+
+			// output
+			$pdf->Output("surat/".str_slug($data->judul)."-ttd.pdf", "F");
+		}
 	}
