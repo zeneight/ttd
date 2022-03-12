@@ -1,13 +1,13 @@
 <?php namespace App\Http\Controllers;
 
 	use Session;
-	use Request;
 	use DB;
 	use CRUDBooster;
 	use Datatables;
 	use Carbon\Carbon;
 	use Storage;
 
+	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\File;
 	use Illuminate\Support\Facades\Response;
 
@@ -557,8 +557,16 @@
 		}
 
 		// fungsi tanda tangan TTD
-		public function tandaTangan($data) {
-			// query
+		public function tandaTangan(Request $request) {
+			if($request->passcode!=CRUDBooster::getSetting('passcode')){
+				return response()->json(['msg'=>'salah']);
+				exit();
+			}
+
+			// update data
+			DB::table('surats')->where('id', $request->id)->update(array('status' => 1));
+
+			// query get data
 			$data = DB::table('surats')
 				->rightJoin(
 					'categories', 
@@ -573,7 +581,7 @@
 					'categories.kordinat_y',
 					'surats.*'
 				)
-				->where('surats.id', '=', $id)
+				->where('surats.id', '=', $request->id)
 				->first();
 			
 			$pdf = new \setasign\Fpdi\Fpdi();
@@ -602,5 +610,7 @@
 
 			// output
 			$pdf->Output("surat/".str_slug($data->judul)."-ttd.pdf", "F");
+
+			return response()->json(['msg'=>'benar']);
 		}
 	}

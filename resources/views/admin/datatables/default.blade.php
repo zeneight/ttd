@@ -19,15 +19,24 @@
 					if (inputValue === '') {
 						swal.showInputError('Mohon isikan field!');
 						return false
-					}else{
-						
+					} else if (inputValue != false){
 						$.ajax({
-							type:'POST',
+							type:'post',
 							url:&quot;{{CRUDBooster::mainpath('ttd')}}&quot;,
-								data:{id:{{$sql->id}}, password:inputValue},
-								success:function(data){
-									alert(data.success);
+							data:{
+								id: &quot;{{$sql->id}}&quot;, 
+								passcode: inputValue,
+								_token: &quot;{{ csrf_token() }}&quot;,
+							},
+							dataType: 'json',
+							success:function(data){
+								if(data.msg==='salah') swal('Ups!', 'Passcode yang Anda inputkan salah, silahkan mengulangi input lagi!', 'error');
+								if(data.msg==='benar') {
+									swal('Selamat!', 'Surat telah di-tandatangani!', 'success');
+									$('#example').DataTable().ajax.reload();
+									$('#belum').DataTable().ajax.reload();
 								}
+							}
 						});
 					}
 				});"><i class="fa fa-book"></i> TTD</a>
