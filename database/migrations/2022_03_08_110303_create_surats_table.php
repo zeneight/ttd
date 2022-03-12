@@ -20,6 +20,7 @@ class CreateSuratsTable extends Migration
             $table->string('judul');
             
             $table->string('file_surat');
+            $table->number('status');
             $table->timestamps();
         });
     }

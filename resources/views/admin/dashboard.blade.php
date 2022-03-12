@@ -30,7 +30,7 @@
                         <div class="icon">
                             <i class="fa fa-envelope-o"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                         <div class="icon">
                             <i class="fa fa-envelope"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@
                         <div class="icon">
                             <i class="fa fa-envelope"></i>
                         </div>
-                        <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <!-- <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
                     </div>
                 </div>
 

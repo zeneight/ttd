@@ -185,6 +185,40 @@
 					// \"dom\": \"ltrip\",
 					order: [[ 3, \"desc\" ]]
 				});
+
+				var tb2 = $('#belum').DataTable({
+					\"processing\": true,
+					\"serverSide\": true,
+					\"ajax\": '".CRUDBooster::mainpath('json-index-belum')."',
+					\"columns\": [
+						{ data: \"aksi\", name:\"aksi\", orderable:false},
+						{ data: \"judul\", name:\"judul\"},
+						{ data: \"kategori\", name:\"kat_id\"},
+						{ data: \"id\", name:\"id\"},
+					],
+					\"language\": {
+						\"lengthMenu\": \"Tampilkan _MENU_ Data per Halaman\",
+						\"zeroRecords\": \"Tidak ada Data\",
+						\"info\": \"Menampilkan _START_ sampai _END_ dari _TOTAL_ total data\",
+						\"infoEmpty\": \"Tabel kosong\",
+						\"infoFiltered\": \"(Difilter dari _MAX_ total data)\",
+						\"search\": \"Cari\",
+						\"paginate\": {
+							\"first\":      \"Pertama\",
+							\"last\":       \"Terakhir\",
+							\"next\":       \">\",
+							\"previous\":   \"<\"
+						},
+					},
+					columnDefs: [{
+						\"orderable\": false,
+						},
+						{ 'visible': false, 'targets': 3 }
+					],
+					// \"dom\": \"ltrip\",
+					order: [[ 3, \"desc\" ]]
+				});
+
 				// pencarian
 				// $('#pedagang_filter').on('change', function(){
 				// 	var searchText1;
@@ -236,72 +270,6 @@
 					var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
 					return parsedDate;
 				}    
-
-				//konfigurasi daterangepicker pada input dengan id datesearch
-				// lokal
-				var id_daterangepicker = {
-					'direction': 'ltr',
-					'format': 'DD/MM/YYYY',
-					'separator': ' - ',
-					'applyLabel': 'Terapkan',
-					'cancelLabel': 'Batal',
-					'fromLabel': 'Dari',
-					'toLabel': 'Sampai',
-					'customRangeLabel': 'Atur',
-					'daysOfWeek': [
-						'Min',
-						'Sen',
-						'Sel',
-						'Rab',
-						'Kam',
-						'Jum',
-						'Sab'
-					],
-					'monthNames': [
-						'Januari',
-						'Februari',
-						'Maret',
-						'April',
-						'Mei',
-						'Juni',
-						'Juli',
-						'Agustus',
-						'September',
-						'Oktober',
-						'November',
-						'Desember'
-					],
-					'firstDay': 1
-				};
-				
-				var tgl_awal;
-            	var tgl_akhir;
-				$(function() {
-					$('#datesearch').daterangepicker({
-						locale: id_daterangepicker,
-						opens: 'left'
-					}, function(start, end, label) {
-						tgl_awal = start.format('YYYY-MM-DD');
-						tgl_akhir = end.format('YYYY-MM-DD');
-					});
-				});
-
-				//menangani proses saat apply date range
-				$('#datesearch').on('apply.daterangepicker', function(ev, picker) {
-					$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-					start_date=picker.startDate.format('DD/MM/YYYY');
-					end_date=picker.endDate.format('DD/MM/YYYY');
-					$.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
-					tb.draw();
-				});
-
-				$('#datesearch').on('cancel.daterangepicker', function(ev, picker) {
-					$(this).val('');
-					start_date='';
-					end_date='';
-					$.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
-					tb.draw();
-				});
 				";
 			}
 
@@ -560,6 +528,29 @@
 
 		// json index
 		public function getJsonIndex() {
+			$sql = DB::table("surats")
+			->leftJoin(
+				'categories', 
+				'surats.kat_id', 
+				'=', 
+				'categories.id'
+				)
+			->select(
+				'categories.judul as kategori',
+				'surats.*'
+				)
+			->get();
+				
+			// datatable
+			return Datatables::of($sql)
+			->addColumn('aksi', function($sql){
+				return view('admin/datatables/default', compact('sql'));
+			})
+			->make(true);
+		}
+
+		// json index belum
+		public function getJsonIndexBelum() {
 			$sql = DB::table("surats")
 			->leftJoin(
 				'categories', 
