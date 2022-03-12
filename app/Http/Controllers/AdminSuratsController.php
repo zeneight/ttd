@@ -6,6 +6,7 @@
 	use CRUDBooster;
 	use Datatables;
 	use Carbon\Carbon;
+	use Storage;
 
 	use Illuminate\Support\Facades\File;
 	use Illuminate\Support\Facades\Response;
@@ -535,10 +536,24 @@
 		public function getDownload($data) {
 			$file = public_path().DIRECTORY_SEPARATOR.'surat'.DIRECTORY_SEPARATOR.$data.'-ttd.pdf';
 			$file = File::get($file);
+			
 			$response = Response::make($file,200);
 			$response->header('Content-Type', 'application/pdf');
-			return $response;
+			return $response;	
+		}
+
+		// get mentah pdf
+		public function getPdf($id) {
+			$data = DB::table('surats')
+				->where('id', '=', $id)
+				->first();
+
+			$file = storage_path('app'.DIRECTORY_SEPARATOR.$data->file_surat);
+			$file = File::get($file);
 			
+			$response = Response::make($file,200);
+			$response->header('Content-Type', 'application/pdf');
+			return $response;			
 		}
 
 		// fungsi tanda tangan TTD

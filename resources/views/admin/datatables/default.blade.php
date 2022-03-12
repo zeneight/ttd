@@ -4,8 +4,8 @@
 	@endif
 	@if(CRUDBooster::isUpdate() && $sql->id != NULL)
 		@if($sql->status==0)
-		<a class="btn btn-xs btn-primary btn-ttd" title="TTD" href="javascript:;" onclick="swal({   
-				title: &quot;Tanda-tanganni Surat&quot;,   
+		<a class="btn btn-xs btn-primary btn-ttd" title="Tanda-tangani" href="javascript:;" onclick="swal({   
+				title: &quot;Tanda-tangani Surat&quot;,   
 				text: &quot;Inputkan passcode Anda!&quot;,   
 				type: &quot;input&quot;,   
 				showCancelButton: true,     
@@ -31,8 +31,11 @@
 						});
 					}
 				});"><i class="fa fa-book"></i> TTD</a>
+				<a target="_BLANK" class="btn btn-xs btn-warning btn-download" title="Lihat" href='{{CRUDBooster::mainpath("pdf/".$sql->id)}}'><i class="fa fa-eye"> </i></a>
+		@else
+		<a target="_BLANK" class="btn btn-xs btn-success btn-download" title="Lihat" href='{{CRUDBooster::mainpath("download/".str_slug($sql->judul))}}'><i class="fa fa-download"> </i></a>
 		@endif
-		<a target="_BLANK" class="btn btn-xs btn-warning btn-download" title="Lihat" href='{{CRUDBooster::mainpath("download/".str_slug($sql->judul))}}'><i class="fa fa-eye"> </i></a>
+		
 	@endif
 	@if(CRUDBooster::isDelete())
 	<a class="btn btn-xs btn-danger btn-delete" title="Hapus" href="javascript:;" onclick="swal({   
