@@ -19,6 +19,7 @@ Route::get('/admin','AdminDashboardController@getIndex');
 Route::get('/admin/signature', 'AdminSignatureController@index');
 Route::post('/admin/signature/store', 'AdminSignatureController@store')->name('signature.store');
 Route::post('/admin/surats/ttd', 'AdminSuratsController@tandaTangan')->name('surats.ttd');
+Route::get('/surat/{data}','SuratController@index');
 
 // ------------
 // Route::get('/{any}', function () {
