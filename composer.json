@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "setasign/fpdf": "1.8.*",
         "setasign/fpdi": "^2.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
