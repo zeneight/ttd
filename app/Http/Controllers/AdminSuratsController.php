@@ -270,7 +270,8 @@
 					var dateArray= rawDate.split(\"/\");
 					var parsedDate= new Date(dateArray[2], parseInt(dateArray[1])-1, dateArray[0]);  // -1 because months are from 0 to 11   
 					return parsedDate;
-				}    
+				}  
+				
 				";
 			}
 
