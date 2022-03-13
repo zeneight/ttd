@@ -74,6 +74,30 @@ class AdminDashboardController extends \crocodicstudio\crudbooster\controllers\C
         $data = [];
         $data['page_title'] = "Dashboard";
 
+        // get total
+        $total = DB::table("surats")->count();
+
+        // get sudah
+        $sudah = DB::table("surats")->select('id')->where('status', '=', 1)->count();
+        // get belum
+        $belum = DB::table("surats")->select('id')->where('status', '=', 0)->count();
+
+        // ----------------
+        $jenis = [];
+        $kategoris = DB::table("categories")->select('judul', 'id')->get();
+
+        foreach($kategoris as $key => $kt) {
+            $jenis[$key]['judul'] = $kt->judul;
+
+            $count = DB::table("surats")->select('id')->where('kat_id', '=', $kt->id)->count();
+            $jenis[$key]['jml'] = $count;
+        }
+        
+        $data['total'] = $total;
+        $data['sudah'] = $sudah;
+        $data['belum'] = $belum;
+        $data['kategori'] = $jenis;
+
         return $this->view('admin/dashboard', $data);
     }
 }

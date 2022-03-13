@@ -24,7 +24,7 @@
 
                     <div class="small-box bg-aqua">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>{{ $total }}</h3>
                             <p>Total Surat</p>
                         </div>
                         <div class="icon">
@@ -45,7 +45,7 @@
 
                     <div class="small-box bg-green">
                         <div class="inner">
-                            <h3>44</h3>
+                            <h3>{{$sudah}}</h3>
                             <p>Sudah Di-tandatangani</p>
                         </div>
                         <div class="icon">
@@ -59,7 +59,7 @@
 
                     <div class="small-box bg-red">
                         <div class="inner">
-                            <h3>65</h3>
+                            <h3>{{$belum}}</h3>
                             <p>Belum Di-tandatangani</p>
                         </div>
                         <div class="icon">
@@ -78,53 +78,20 @@
                 </div>
                 <div class="box-body">
                     <div class="row">
+                        @foreach($kategori as $jn)
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
+                                <span class="info-box-icon bg-default"><i class="fa fa-envelope-o"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">SKU</span>
-                                    <span class="info-box-number">1,410</span>
+                                    <span class="info-box-text">{{$jn['judul']}}</span>
+                                    <span class="info-box-number">{{$jn['jml']}}</span>
                                 </div>
 
                             </div>
 
                         </div>
+                        @endforeach
 
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-green"><i class="fa fa-flag-o"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Bookmarks</span>
-                                    <span class="info-box-number">410</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-yellow"><i class="fa fa-files-o"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Uploads</span>
-                                    <span class="info-box-number">13,648</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-red"><i class="fa fa-star-o"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Likes</span>
-                                    <span class="info-box-number">93,139</span>
-                                </div>
-
-                            </div>
-
-                        </div>
 
                     </div>
 
