@@ -6,6 +6,7 @@
 	use Datatables;
 	use Carbon\Carbon;
 	use Storage;
+	use QrCode;
 
 	use Illuminate\Http\Request;
 	use Illuminate\Support\Facades\File;
@@ -449,7 +450,7 @@
 				// hapus di storage
 				File::delete(storage_path("app/".$data->file_surat));
 			}else{
-				dd("File does not exists -> "."surat/".str_slug($data->judul)."-ttd.pdf");
+				// dd("File does not exists -> "."surat/".str_slug($data->judul)."-ttd.pdf");
 			}
 
 	    }
@@ -598,16 +599,37 @@
 			//Use this page as template
 			$pdf->useTemplate($tppl, null, null, null, null, true);
 
+			// add image
+			$pdf->Image(storage_path("app/".CRUDBooster::getSetting('ttd')),$data->kordinat_x,$data->kordinat_y,75,25);
+
+			// --------------------------
+			$alamat = url('/surat/'.str_slug($data->judul));
+
+			// generate qrcode
+			$qrcode = QrCode::format('png')->size(80)->generate($alamat);
+			$output_file = '/qr/qrcode.png';
+			Storage::disk('local')->put($output_file, $qrcode);
+
+			if($qrcode){
+				$pdf->Image(storage_path('app/qr/qrcode.png'),16,293,15,15);
+			}
+
 			#Print Hello World at the bottom of the page
 
 			//config text
-			// $pdf->SetFont("Arial",'',15);
-			// $pdf->SetTextColor(0,0,0);
-			// $pdf->SetXY(140, 200);
-			// $pdf->Write(0, "TESTSEESTE");
+			$pdf->SetFont("Arial",'',8);
+			$pdf->SetTextColor(0,0,0);
+			$pdf->SetXY(32, 295);
+			$pdf->Write(2, "Cetakan dokumen ini merupakan salinan dari");
 
-			// add image
-			$pdf->Image(storage_path("app/".CRUDBooster::getSetting('ttd')),$data->kordinat_x,$data->kordinat_y,75,25);
+			$pdf->SetXY(32, 298);
+			$pdf->Write(2, "file dokumen bertandatangan digital yang resmi dan sah");
+
+			$pdf->SetXY(32, 301);
+			$pdf->Write(2, "yang keabsahannya dapat diakses di alamat di bawah ini:");
+
+			$pdf->SetXY(32, 304);
+			$pdf->Write(2, $alamat);
 
 			// output
 			$pdf->Output("surat/".str_slug($data->judul)."-ttd.pdf", "F");

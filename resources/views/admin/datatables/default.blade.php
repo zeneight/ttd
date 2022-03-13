@@ -30,7 +30,7 @@
 							},
 							dataType: 'json',
 							beforeSend: function() {
-								$('.sa-confirm-button-container .confirm').append(' &nbps;<i class=\'fa fa-refresh fa-spin fa-fw\'></i>');
+								$('.sa-confirm-button-container .confirm').append(' <i class=\'fa fa-refresh fa-spin fa-fw\'></i>');
 							},
 							success:function(data){
 								if(data.msg==='salah') swal('Ups!', 'Passcode yang Anda inputkan salah, silahkan mengulangi input lagi!', 'error');
